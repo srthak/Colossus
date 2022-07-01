@@ -45,7 +45,7 @@ app.post(
   }
 );
 
-app.get("/getSong/:id", async (req, res) => {
+app.get("/api/music/play/:id", async (req, res) => {
   try {
     const song = await Song.findOne({ _id: req.params.id });
     res.set("Content-Type", "audio/mpeg");
@@ -62,7 +62,7 @@ app.get("/getSongs", async (req, res) => {
     const songs = await Song.find()
       .limit(pageSize)
       .skip(pageSize * pageNumber);
-    res.send(songs);
+    res.status(200).send(songs);
   } catch (error) {
     res.status(404).send({ error: error.message });
   }
