@@ -3,9 +3,28 @@ require("mongoose");
 require("./mongooseConnectivity");
 const Song = require("./songSchema");
 const multer = require("multer");
+const limitter = require("express-rate-limit");
+const compression = require("compression");
 
 const app = express();
 const port = process.env.PORT;
+
+app.use(
+  limitter({
+    WindowMs: 5000,
+    max: 5,
+    message: {
+      code: 429,
+      message: "Too many request",
+    },
+  })
+);
+
+app.use(
+  compression({
+    level: 6,
+  })
+);
 
 app.use(express.json());
 
